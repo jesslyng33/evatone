@@ -1,6 +1,7 @@
 var videoElement = document.getElementById('videoElement');
 var canvas = document.createElement('canvas');
-var interval = 1000;
+var emotionElement = document.querySelector('h1'); // Select the h1 element
+var interval = 1000; // Capture frame every 1 second
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
@@ -8,7 +9,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             videoElement.srcObject = stream;
             videoElement.play();
         }
-        // Capture frames every 5 seconds and send to backend
+        // Capture frames every 1 second and send to backend
         setInterval(function () {
             if (videoElement && canvas) {
                 captureAndSendFrame();
@@ -45,7 +46,13 @@ function captureAndSendFrame() {
                 })
                     .then(function (response) { return response.json(); })
                     .then(function (data) {
-                    console.log('Frame sent successfully:', data);
+                    console.log('Frame processed:', data);
+                    if (data.emotion && data.score) {
+                        // Update the h1 element with the detected emotion
+                        if (emotionElement) {
+                            emotionElement.textContent = "Detected Emotion: ".concat(data.emotion, ", Score: ").concat(data.score.toFixed(4));
+                        }
+                    }
                 })
                     .catch(function (error) {
                     console.error('Error sending frame to backend:', error);

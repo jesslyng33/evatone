@@ -27,9 +27,15 @@ def process_frame():
     image_file.save(image_path)
     
     # Asynchronously send the image to Hume API for emotion detection
-    asyncio.run(process_with_hume(image_path))
+    largest_emotion, largest_score = asyncio.run(process_with_hume(image_path))
     
-    return jsonify({'status': 'success', 'message': 'Frame processed'})
+    # Return the largest emotion and score as a response
+    return jsonify({
+        'status': 'success',
+        'message': 'Frame processed',
+        'emotion': largest_emotion,
+        'score': largest_score
+    })
 
 async def process_with_hume(image_path):
     # Initialize the Hume client with the API key
@@ -50,9 +56,12 @@ async def process_with_hume(image_path):
                     largest_score = result.face.predictions[0].emotions[i].score
                     largest_emotion = result.face.predictions[0].emotions[i].name
 
+            # Print the detected emotion for debugging
             print(f"Emotion detected: {largest_emotion} (Score: {largest_score:.4f})")
+            return largest_emotion, largest_score
         else:
             print("No predictions available.")
+            return None, 0.0
 
 if __name__ == '__main__':
     app.run(debug=True)
