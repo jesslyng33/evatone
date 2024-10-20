@@ -4,9 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Camera with TypeScript</title>
+  <style>
+    /* Centering content using flexbox */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #fcbd9d, #7d6f63, #8015e8, #f3a78f) /* Change the background color */
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+      color: #333; /* Optional: change text color */
+    }
+
+    video {
+      width: 640px; /* Adjust the size of the video */
+      height: 480px;
+      border: 2px solid #000; /* Optional: add a border around the video */
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add shadow */
+    }
+  </style>
 </head>
 <body>
-  <h1>test</h1>
+  <h1>Camera with TypeScript</h1>
   <video id="videoElement" autoplay></video>
   <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
 </body>
